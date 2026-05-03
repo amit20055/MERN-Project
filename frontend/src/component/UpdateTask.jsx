@@ -9,7 +9,7 @@ function UpdateTask(){
 
     const getTask = async (id) => {
         let task = await fetch(`/api/task/${id}`, {
-            credentials: 'include'   // 👈 IMPORTANT
+            credentials: 'include'   
         });
 
         task = await task.json();
@@ -29,7 +29,7 @@ function UpdateTask(){
         try {
             let response = await fetch(`/api/update-task`, {
                 method: 'PUT',
-                credentials: 'include',   // 👈 IMPORTANT
+                credentials: 'include',  
                 body: JSON.stringify(taskData),
                 headers: {
                     'Content-Type': 'application/json'
@@ -68,6 +68,17 @@ function UpdateTask(){
                     rows={4}
                     placeholder="Enter task description"
                 />
+
+                <label>Priority</label>
+                <select 
+                    value={taskData?.priority || 'Low'} 
+                    onChange={(e)=>setTaskData({...taskData, priority:e.target.value})}
+                    style={{width: '100%', padding: '10px', marginBottom: '15px', borderRadius: '6px', border: '1px solid #ccc'}}
+                >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
 
                 <button onClick={updateTask} className="btn">
                     Update Task

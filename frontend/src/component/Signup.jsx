@@ -17,7 +17,7 @@ function SignUp(){
 
         let result = await fetch('/api/signup', {
             method: 'POST',
-            credentials: 'include',   // 👈 IMPORTANT
+            credentials: 'include',   
             headers: {
                 'Content-Type': 'application/json'
             },

@@ -8,6 +8,14 @@ function List() {
     const [taskData, setTaskData] = useState();
     const[selectedTask,setSelectedTask]=useState([]);
 
+    const [searchTerm, setSearchTerm] = useState(''); // 👈 Search term state
+
+    // Filter tasks based on search term
+    const filteredTasks = taskData?.filter(task => 
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        task.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const getListData = async () => {
         let list = await fetch(`/api/tasks?t=${new Date().getTime()}`,{
             credentials:'include'
@@ -84,25 +92,47 @@ function List() {
 
     }
     
+    // Priority color helper
+    const getPriorityStyle = (priority) => {
+        if(priority === 'High') return { borderLeft: '8px solid #ff4d4d' };
+        if(priority === 'Medium') return { borderLeft: '8px solid #ffd700' };
+        return { borderLeft: '8px solid #2ed573' };
+    }
 
     return (
         <div className="List-container">
             <h1>Task List</h1>
+            
+            {/* 👈 Search Bar */}
+            <div style={{marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
+                <input 
+                    type="text" 
+                    placeholder="Search tasks by title or description..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{flex: 1, padding: '10px', borderRadius: '6px', border: '1px solid #ccc'}}
+                />
+            </div>
+
             <button onClick={deleteMultiple} className="delete-btn delete-multiple">Delete</button>
             <ul className="task-list">
                 <li className="list-header"> <input onChange={selectAll} type="Checkbox"/> </li>
                 <li className="list-header">S.No</li>
                 <li className="list-header">Title</li>
                 <li className="list-header">Description</li>
+                <li className="list-header">Priority</li>
                 <li className="list-header">Actions</li>
 
                 {
-                    taskData && taskData.map((item, index) => (
+                    filteredTasks && filteredTasks.map((item, index) => (
                         <Fragment key={item._id}>
-                            <li className="list-item"><input onChange={()=>selectSingleItem(item._id)} checked={selectedTask.includes(item._id)}  type="checkbox"/></li>
+                            <li className="list-item" style={getPriorityStyle(item.priority)}><input onChange={()=>selectSingleItem(item._id)} checked={selectedTask.includes(item._id)}  type="checkbox"/></li>
                             <li className="list-item">{index + 1}</li>
                             <li className="list-item">{item.title}</li>
                             <li className="list-item">{item.description}</li>
+                            <li className="list-item" style={{fontWeight: 'bold', color: item.priority === 'High' ? '#ff4d4d' : item.priority === 'Medium' ? '#d4af37' : '#2ed573'}}>
+                                {item.priority || 'Low'}
+                            </li>
                             <li className="list-item">
                                 <button className="delete-btn" onClick={()=>deleteTask(item._id)}>Delete</button>
                                 <Link className="update-btn" to={"update/"+item._id}>Update</Link>

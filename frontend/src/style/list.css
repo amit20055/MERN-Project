@@ -4,8 +4,8 @@
     padding: 20px;
     list-style: none;
     margin: 20px; 
-    grid-template-columns: 80px 50px 150px 1fr 180px; /* Adjusted slightly for better fit */
-    min-width: 800px; /* Ensures list doesn't get squeezed */
+    grid-template-columns: 80px 50px 150px 1fr 100px 180px; /* 6 columns now */
+    min-width: 900px; /* Increased min-width for the extra column */
 }
 
 .List-container {

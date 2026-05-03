@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 function AddTask(){
-    const [taskData, setTaskData] = useState({ title: '', description: '' }); // ✅ FIX
+    const [taskData, setTaskData] = useState({ title: '', description: '' }); 
 
     const navigate = useNavigate();
 
@@ -49,6 +49,17 @@ function AddTask(){
                     rows={4}
                     placeholder="Enter task description"
                 />
+
+                <label>Priority</label>
+                <select 
+                    value={taskData.priority || 'Low'} 
+                    onChange={(e)=>setTaskData({...taskData, priority:e.target.value})}
+                    style={{width: '100%', padding: '10px', marginBottom: '15px', borderRadius: '6px', border: '1px solid #ccc'}}
+                >
+                    <option value="Low">Low (Green)</option>
+                    <option value="Medium">Medium (Yellow)</option>
+                    <option value="High">High (Red)</option>
+                </select>
 
                 <button type='button' onClick={handleAddTask} className="btn">
                     Add New Task
