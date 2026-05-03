@@ -99,11 +99,65 @@ function List() {
         return { borderLeft: '8px solid #2ed573' };
     }
 
+    // Calculate stats for Dashboard
+    const total = taskData ? taskData.length : 0;
+    const high = taskData ? taskData.filter(t => t.priority === 'High').length : 0;
+    const med = taskData ? taskData.filter(t => t.priority === 'Medium').length : 0;
+    const low = total - high - med;
+
     return (
         <div className="List-container">
-            <h1>Task List</h1>
+            <h1>Task Dashboard</h1>
+
+            {/* 👈 Progress Dashboard Section */}
+            <div style={{
+                display: 'flex', 
+                gap: '20px', 
+                marginBottom: '30px', 
+                flexWrap: 'wrap',
+                justifyContent: 'center'
+            }}>
+                <div style={{
+                    background: '#8991e9', 
+                    color: 'white', 
+                    padding: '20px', 
+                    borderRadius: '10px', 
+                    minWidth: '150px',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                }}>
+                    <h3 style={{margin: '0', fontSize: '14px'}}>Total Tasks</h3>
+                    <p style={{margin: '5px 0 0', fontSize: '24px', fontWeight: 'bold'}}>{total}</p>
+                </div>
+
+                <div style={{
+                    background: '#ff4d4d', 
+                    color: 'white', 
+                    padding: '20px', 
+                    borderRadius: '10px', 
+                    minWidth: '150px',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                }}>
+                    <h3 style={{margin: '0', fontSize: '14px'}}>High Priority</h3>
+                    <p style={{margin: '5px 0 0', fontSize: '24px', fontWeight: 'bold'}}>{high}</p>
+                </div>
+
+                <div style={{
+                    background: '#8791b0', 
+                    color: 'white', 
+                    padding: '20px', 
+                    borderRadius: '10px', 
+                    minWidth: '150px',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                }}>
+                    <h3 style={{margin: '0', fontSize: '14px'}}>Others</h3>
+                    <p style={{margin: '5px 0 0', fontSize: '24px', fontWeight: 'bold'}}>{med + low}</p>
+                </div>
+            </div>
             
-            {/* 👈 Search Bar */}
+            {/* Search Bar */}
             <div style={{marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
                 <input 
                     type="text" 
