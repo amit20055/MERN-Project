@@ -15,7 +15,7 @@ function SignUp(){
     const handleSignUp = async () => {
         console.log(userData);
 
-        let result = await fetch('https://mern-backend-qgfh.onrender.com/signup', {
+        let result = await fetch('/api/signup', {
             method: 'POST',
             credentials: 'include',   // 👈 IMPORTANT
             headers: {

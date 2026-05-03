@@ -8,7 +8,7 @@ function UpdateTask(){
     const { id } = useParams();
 
     const getTask = async (id) => {
-        let task = await fetch(`https://mern-backend-qgfh.onrender.com/task/${id}`, {
+        let task = await fetch(`/api/task/${id}`, {
             credentials: 'include'   // 👈 IMPORTANT
         });
 
@@ -27,7 +27,7 @@ function UpdateTask(){
         e.preventDefault();
 
         try {
-            let response = await fetch(`https://mern-backend-qgfh.onrender.com/update-task`, {
+            let response = await fetch(`/api/update-task`, {
                 method: 'PUT',
                 credentials: 'include',   // 👈 IMPORTANT
                 body: JSON.stringify(taskData),

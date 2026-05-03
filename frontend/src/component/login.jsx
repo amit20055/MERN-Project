@@ -16,7 +16,7 @@ function Login(){
 
      const handlelogin=async()=>{
     console.log(userData);
-    let result=await fetch('https://mern-backend-qgfh.onrender.com/login',{
+    let result=await fetch('/api/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

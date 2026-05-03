@@ -10,7 +10,7 @@ function AddTask(){
     const handleAddTask = async () => {
         console.log(taskData);
 
-        let result = await fetch('https://mern-backend-qgfh.onrender.com/add-task', {
+        let result = await fetch('/api/add-task', {
             method: 'POST',
             credentials: 'include',
             headers: {
