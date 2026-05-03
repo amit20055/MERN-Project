@@ -4,6 +4,10 @@ import { collectionName, connection } from "./dbconfig.js";
 import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+
+// Fix for SSL/TLS compatibility issue between Render and MongoDB Atlas
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const app = express();
 
 app.use(express.json());
