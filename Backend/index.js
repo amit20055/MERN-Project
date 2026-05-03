@@ -22,7 +22,8 @@ app.post("/signup", async (req, resp) => {
     const collection = await db.collection("users");
     const result = await collection.insertOne(userData);
     if (result) {
-      jwt.sign(userData, "Google", { expiresIn: "5d" }, (error, token) => {
+      // 👈 Token mein Database wala ID (insertedId) daal rahe hain
+      jwt.sign({ ...userData, _id: result.insertedId }, "Google", { expiresIn: "5d" }, (error, token) => {
         resp.send({
           success:true,
           message:"signup done",
@@ -49,7 +50,8 @@ app.post("/login", async (req, resp) => {
     const collection = await db.collection("users");
     const result = await collection.findOne({email:userData.email,password:userData.password});
     if (result) {
-      jwt.sign(userData, "Google", { expiresIn: "5d" }, (error, token) => {
+      // 👈 Token mein pura user document (jisne _id bhi hai) daal rahe hain
+      jwt.sign({ ...result }, "Google", { expiresIn: "5d" }, (error, token) => {
         resp.send({
           success:true,
           message:"login done",
@@ -77,8 +79,12 @@ app.post("/login", async (req, resp) => {
 
 app.post("/add-task",verifyJwtToken, async (req, resp) => {
   const db = await connection();
+  const taskData = {
+    ...req.body,
+    userId: req.user._id // 👈 Task ke saath User ID save kar rahe hain
+  };
   const collection = await db.collection(collectionName);
-  const result = await collection.insertOne(req.body);
+  const result = await collection.insertOne(taskData);
   if (result) {
     resp.send({
       message: "New task added successfully",
@@ -93,7 +99,8 @@ app.post("/add-task",verifyJwtToken, async (req, resp) => {
 app.get("/tasks",verifyJwtToken, async (req, resp) => {
   const db = await connection();
   const collection = await db.collection(collectionName);
-  const result = await collection.find().toArray();
+  // 👈 Sirf wahi tasks laao jo is user ke hain
+  const result = await collection.find({ userId: req.user._id }).toArray();
   if (result) {
     resp.send({ message: "Tasks list fectched", success: true, result });
   } else {
@@ -108,9 +115,9 @@ app.put("/update-task",verifyJwtToken, async (req, resp) => {
   const collection = await db.collection(collectionName);
   const { _id, ...fields } = req.body;
   const update = { $set: fields };
-  console.log(fields);
 
-  const result = await collection.updateOne({ _id: new ObjectId(_id) }, update);
+  // 👈 Check ki user sirf apna hi task update kare
+  const result = await collection.updateOne({ _id: new ObjectId(_id), userId: req.user._id }, update);
   if (result) {
     resp.send({ message: "Tasks data updated", success: true, result });
   } else {
@@ -122,7 +129,8 @@ app.get("/task/:id",verifyJwtToken, async (req, resp) => {
   const db = await connection();
   const collection = await db.collection(collectionName);
   const id = req.params.id;
-  const result = await collection.findOne({ _id: new ObjectId(id) });
+  // 👈 Sirf apna task dhoondo
+  const result = await collection.findOne({ _id: new ObjectId(id), userId: req.user._id });
   if (result) {
     resp.send({ message: "Task found", success: true, result });
   } else {
@@ -134,7 +142,8 @@ app.delete("/delete/:id",verifyJwtToken, async (req, resp) => {
   const db = await connection();
   const id = req.params.id;
   const collection = await db.collection(collectionName);
-  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  // 👈 Check ki user sirf apna hi task delete kare
+  const result = await collection.deleteOne({ _id: new ObjectId(id), userId: req.user._id });
   if (result) {
     resp.send({ message: "Task deleted successfully", success: true, result });
   } else {
@@ -149,7 +158,8 @@ app.delete("/delete-multiple",verifyJwtToken, async (req, resp) => {
   const deleteTaskIds = ids.map((item) => new ObjectId(item));
 
   const collection = await db.collection(collectionName);
-  const result = await collection.deleteMany({ _id: { $in: deleteTaskIds } });
+  // 👈 Sirf wahi tasks delete karo jo is user ke hain
+  const result = await collection.deleteMany({ _id: { $in: deleteTaskIds }, userId: req.user._id });
   if (result.acknowledged) {
     resp.send({ message: "Task deleted successfully", success: true, result });
   } else {
@@ -167,6 +177,7 @@ function verifyJwtToken(req,resp,next){
 
       })
     }
+    req.user = decoded; // 👈 Token se user ka data req mein save kar liya
     next();
     
   })
