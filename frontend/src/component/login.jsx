@@ -12,11 +12,11 @@ function Login(){
              navigate('/')
 
         }
-    })
+    }, [navigate])
 
      const handlelogin=async()=>{
     console.log(userData);
-    let result=await fetch('http://localhost:7700/login',{
+    let result=await fetch('https://mern-backend-qgfh.onrender.com/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

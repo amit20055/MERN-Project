@@ -8,12 +8,8 @@ function List() {
     const [taskData, setTaskData] = useState();
     const[selectedTask,setSelectedTask]=useState([]);
 
-    useEffect(() => {
-        getListData();
-    }, []);
-
     const getListData = async () => {
-        let list = await fetch("http://localhost:7700/tasks",{
+        let list = await fetch('https://mern-backend-qgfh.onrender.com/task',{
             credentials:'include'
         });
         list = await list.json()
@@ -24,8 +20,12 @@ function List() {
         }
 
     }
+
+    useEffect(() => {
+        getListData();
+    }, []);
     const deleteTask = async (id) => {
-        let item = await fetch('http://localhost:7700/delete/'+id, {
+        let item = await fetch('https://mern-backend-qgfh.onrender.com/delete/'+id, {
             method: 'delete',
              credentials:'include',
         });
@@ -60,7 +60,7 @@ function List() {
 
     }
     const deleteMultiple=async()=>{
-        let item = await fetch('http://localhost:7700/delete-multiple', {
+        let item = await fetch('https://mern-backend-qgfh.onrender.com/delete-multiple/', {
             method: 'delete',
              credentials:'include',
             body:JSON.stringify(selectedTask),

@@ -1,44 +1,43 @@
 import '../style/addtask.css'
-import {useEffect  , useState, } from 'react'
-import { useNavigate, useParams,} from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
 function UpdateTask(){
     const [taskData, setTaskData] = useState({ title: '', description: '' });
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { id } = useParams();
 
-  
-    const {id} = useParams();
-
-   useEffect(()=>{
-    getTask(id);
-   },[])
-
-    const getTask= async (id) => {
-        let task = await fetch(`http://localhost:7700/task/`+id, {
-            credentials: 'include'
+    const getTask = async (id) => {
+        let task = await fetch(`https://mern-backend-qgfh.onrender.com/task/${id}`, {
+            credentials: 'include'   // 👈 IMPORTANT
         });
-        task = await task.json();
-        if(task.result){
-            setTaskData(task.result);
 
+        task = await task.json();
+
+        if (task.result) {
+            setTaskData(task.result);
         }
-        
     };
+
+    useEffect(() => {
+        getTask(id);
+    }, [id]);   // 👈 dependency fix
 
     const updateTask = async (e) => {
         e.preventDefault();
-        console.log("function called", taskData);
-        
+
         try {
-            let response = await fetch(`http://localhost:7700/update-task`, {
+            let response = await fetch(`https://mern-backend-qgfh.onrender.com/update-task`, {
                 method: 'PUT',
-                credentials: 'include',
+                credentials: 'include',   // 👈 IMPORTANT
                 body: JSON.stringify(taskData),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+
             let result = await response.json();
+
             if (response.ok && result.success) {
                 navigate('/');
             } else {
@@ -50,18 +49,32 @@ function UpdateTask(){
     };
 
     return(
-        <div  className="container">
+        <div className="container">
             <h1>Update Task</h1>
-        <form>
-            <label htmlFor="">Title</label>
-            <input value={taskData?.title || ''}  onChange={(event)=>setTaskData({...taskData, title:event.target.value})} type="text" name="title" placeholder="enter task title" />
-            <label htmlFor="">Description</label>
-            <textarea value={taskData?.description || ''} onChange={(event)=>setTaskData({...taskData, description:event.target.value})} rows={4} name="description" placeholder="Enter task description" id=""></textarea>
 
-            <button onClick={updateTask} className="btn">Update Task</button>
-        </form>
+            <form>
+                <label>Title</label>
+                <input
+                    value={taskData?.title || ''}
+                    onChange={(e)=>setTaskData({...taskData, title:e.target.value})}
+                    type="text"
+                    placeholder="enter task title"
+                />
+
+                <label>Description</label>
+                <textarea
+                    value={taskData?.description || ''}
+                    onChange={(e)=>setTaskData({...taskData, description:e.target.value})}
+                    rows={4}
+                    placeholder="Enter task description"
+                />
+
+                <button onClick={updateTask} className="btn">
+                    Update Task
+                </button>
+            </form>
         </div>
-
     )
 }
+
 export default UpdateTask;

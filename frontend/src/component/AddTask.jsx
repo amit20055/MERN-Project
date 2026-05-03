@@ -3,43 +3,59 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 function AddTask(){
-    const [taskData, setTaskData] = useState();
+    const [taskData, setTaskData] = useState({ title: '', description: '' }); // ✅ FIX
 
     const navigate = useNavigate();
 
-    const handleAddTask=async()=>{
-      
+    const handleAddTask = async () => {
         console.log(taskData);
-        let result=await fetch('http://localhost:7700/add-task',{
+
+        let result = await fetch('https://mern-backend-qgfh.onrender.com/add-task', {
             method: 'POST',
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(taskData)
         });
-        result =await result.json()
+
+        result = await result.json();
+
         if(result.success){
-            navigate("/")
+            navigate("/");
             console.log("new task added successfully");
-        }else{
-            alert("try after some time")
+        } else {
+            alert("try after some time");
         }
     }
 
     return(
-        <div  className="container">
+        <div className="container">
             <h1>Add New Task</h1>
-        <form>
-            <label htmlFor="">Title</label>
-            <input onChange={(event)=>setTaskData({...taskData, title:event.target.value})} type="text" name="title" placeholder="enter task title" />
-            <label htmlFor="">Description</label>
-            <textarea onChange={(event)=>setTaskData({...taskData, description:event.target.value})} rows={4} name="description" placeholder="Enter task description" id=""></textarea>
 
-            <button type='button' onClick={handleAddTask} className="btn">Add New Task</button>
-        </form>
+            <form>
+                <label>Title</label>
+                <input
+                    value={taskData.title}
+                    onChange={(e)=>setTaskData({...taskData, title:e.target.value})}
+                    type="text"
+                    placeholder="enter task title"
+                />
+
+                <label>Description</label>
+                <textarea
+                    value={taskData.description}
+                    onChange={(e)=>setTaskData({...taskData, description:e.target.value})}
+                    rows={4}
+                    placeholder="Enter task description"
+                />
+
+                <button type='button' onClick={handleAddTask} className="btn">
+                    Add New Task
+                </button>
+            </form>
         </div>
-
     )
 }
+
 export default AddTask;
