@@ -60,7 +60,12 @@ function List() {
 
     }
     const deleteMultiple=async()=>{
-        let item = await fetch('/api/delete-multiple/', {
+        // 1. Frontend se turant hata do (Instant feedback)
+        const updatedTasks = taskData.filter(task => !selectedTask.includes(task._id));
+        setTaskData(updatedTasks);
+
+        // 2. Backend ko delete request bhejo
+        let item = await fetch('/api/delete-multiple', { // removed trailing slash
             method: 'delete',
              credentials:'include',
             body:JSON.stringify(selectedTask),
@@ -74,6 +79,7 @@ function List() {
             setSelectedTask([]);
         }else{
             alert("try after sometime")
+            getListData(); // Refresh if failed
         }
 
     }
