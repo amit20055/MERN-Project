@@ -130,7 +130,11 @@ function List() {
                             <li className="list-item">{index + 1}</li>
                             <li className="list-item">{item.title}</li>
                             <li className="list-item">{item.description}</li>
-                            <li className="list-item" style={{fontWeight: 'bold', color: item.priority === 'High' ? '#ff4d4d' : item.priority === 'Medium' ? '#d4af37' : '#2ed573'}}>
+                            <li className="list-item" style={{
+                                fontWeight: '900', 
+                                color: item.priority === 'High' ? '#ff3333' : item.priority === 'Medium' ? '#ffd700' : '#00ff7f',
+                                textShadow: '1px 1px 2px rgba(0,0,0,0.5)' // 👈 Shadow for better contrast
+                            }}>
                                 {item.priority || 'Low'}
                             </li>
                             <li className="list-item">
