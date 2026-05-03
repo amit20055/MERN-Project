@@ -173,6 +173,8 @@ function verifyJwtToken(req,resp,next){
 }
 
 
-app.listen(7700, () => {
-  console.log("Server is running on port 7700");
+const PORT = process.env.PORT || 7700;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
