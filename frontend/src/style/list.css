@@ -9,28 +9,30 @@
 }
 
 .List-container {
-    overflow-x: auto; /* Adds horizontal scroll on mobile */
+    overflow-x: auto;
     margin-left: 20px;
     margin-right: 20px;
+    color: var(--text-color);
 }
 
 .list-header{
     font-weight: bold;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 10px;
-    background-color: #8991e9;
+    background-color: var(--header-bg);
     text-align: center;
 }
 .list-item{
     padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #8791b0;
+    border: 1px solid var(--border-color);
+    background-color: var(--item-bg);
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     word-break: break-word;
+    color: white; /* keeping text white on item-bg as it was before */
 }
 
 .delete-btn{

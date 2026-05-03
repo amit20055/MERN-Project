@@ -13,6 +13,17 @@ function Navbar(){
       },0)
     }
 
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(theme === 'light' ? 'dark' : 'light');
+    };
+
     useEffect(()=>{
         const handlestorage=()=>{
             setLogin(localStorage.getItem('login'))
@@ -29,6 +40,9 @@ function Navbar(){
         <nav className="navbar">
             <div className='Logo'>To Do App</div>
                 <ul className='nav-Links'>
+                    <li onClick={toggleTheme} style={{cursor: 'pointer', fontSize: '20px'}}>
+                        {theme === 'light' ? '🌙' : '☀️'}
+                    </li>
                     {
                        login?
                        <>

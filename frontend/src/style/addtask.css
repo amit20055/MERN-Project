@@ -1,8 +1,24 @@
+:root {
+    --card-bg: #f4f4f4;
+    --text-color: #333;
+    --border-color: #ccc;
+    --bg-color: #fff;
+    --btn-bg: #325fc0;
+}
+
+[data-theme='dark'] {
+    --card-bg: #222;
+    --text-color: #ddd;
+    --border-color: #444;
+    --bg-color: #333;
+    --btn-bg: #555;
+}
+
 .container{
     max-width: 400px;
     margin:50px auto;
     padding: 30px;
-    background-color: #f4f4f4;
+    background-color: var(--card-bg);
     border-radius: 8px;
     box-shadow: 0px 4px  12px rgba(0,0,0,0.2);
 }
@@ -11,20 +27,22 @@ label{
     display: block;
     margin: 8px;
     font-weight: 600;
-    color:#555 ;
+    color: var(--text-color);
 }
 
 h1{
     text-align: center;
     margin-bottom: 20px;
-    color:#333
+    color: var(--text-color);
 }
 
-input,textarea{
+input,textarea, select{
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
     border-radius: 6px;
     font-size: 14px;
     box-sizing: border-box;
