@@ -67,10 +67,12 @@
     background-color: #096a35;
 }
 .delete-multiple{
-    width: 100px;
-    margin-left: 40px;
+    width: 80px; /* Checkbox column ke barabar */
+    margin-left: 40px; /* 20px list margin + 20px list padding */
     margin-bottom: 10px;
-    display: block; /* Ensures margin works correctly */
+    display: block;
+    padding: 6px 0; /* Padding adjust ki taaki button clean dikhe */
+    text-align: center;
 }
 
 /* Mobile specific adjustment */
@@ -80,8 +82,7 @@
         padding: 10px;
     }
     .delete-multiple {
-        margin: 10px auto; /* Centers the button on mobile */
-        width: 90%; /* Makes it easier to tap on mobile */
-        max-width: 200px;
+        margin-left: 10px; /* Mobile par padding/margin ke hisab se adjust kiya */
+        width: 80px; /* Width wahi rahegi */
     }
 }
