@@ -1,10 +1,14 @@
 .navbar {
-  background-color: #333;
-  padding: 5px 10px;
-  display:flex;
+  background-color: #1a1a1a;
+  padding: 1rem 5%;
+  display: flex;
   justify-content: space-between;
-    align-items: center;
-    color:#fff
+  align-items: center;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .Logo {
@@ -16,15 +20,32 @@
 .nav-Links {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 25px;
+  align-items: center;
 }
 
 .nav-Links li a {
-  color: white;
+  color: #e0e0e0;
   text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .nav-Links li a:hover {
-  text-decoration: underline;
-  color: #ffffffc9;
+  color: #4facfe;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .nav-Links {
+    gap: 15px;
+    padding: 0;
+  }
 }
