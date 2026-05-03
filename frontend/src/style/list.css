@@ -70,12 +70,18 @@
     width: 100px;
     margin-left: 40px;
     margin-bottom: 10px;
+    display: block; /* Ensures margin works correctly */
 }
 
-/* Mobile specific small adjustment */
+/* Mobile specific adjustment */
 @media (max-width: 600px) {
     .task-list {
         margin: 10px 0;
         padding: 10px;
+    }
+    .delete-multiple {
+        margin: 10px auto; /* Centers the button on mobile */
+        width: 90%; /* Makes it easier to tap on mobile */
+        max-width: 200px;
     }
 }
