@@ -13,6 +13,13 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+app.get("/ping", (req, res) => {
+  res.send({ 
+    mongo_uri_exists: !!process.env.MONGO_URI, 
+    mongo_uri_prefix: process.env.MONGO_URI ? process.env.MONGO_URI.substring(0, 10) : null 
+  });
+});
+
 app.post("/signup", async (req, resp) => {
   const userData = req.body;
 
