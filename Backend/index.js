@@ -5,9 +5,6 @@ import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 
-// Fix for SSL/TLS compatibility issue between Render and MongoDB Atlas
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 const app = express();
 
 app.use(express.json());
@@ -16,13 +13,6 @@ app.use(cors({
   credentials:true
 }));
 app.use(cookieParser());
-
-app.get("/ping", (req, res) => {
-  res.send({ 
-    mongo_uri_exists: !!process.env.MONGO_URI, 
-    mongo_uri_prefix: process.env.MONGO_URI ? process.env.MONGO_URI.substring(0, 10) : null 
-  });
-});
 
 app.post("/signup", async (req, resp) => {
   const userData = req.body;
