@@ -13,12 +13,19 @@ export const connection = async () => {
     if (dbInstance) {
         return dbInstance;
     }
-    client = new MongoClient(url, {
-        serverSelectionTimeoutMS: 10000,
-        socketTimeoutMS: 10000,
-    });
-    await client.connect();
-    console.log("MongoDB Connected");
-    dbInstance = client.db(dbname);
-    return dbInstance;
+    console.log("Attempting to connect to MongoDB...");
+    try {
+        client = new MongoClient(url, {
+            serverSelectionTimeoutMS: 5000,
+            connectTimeoutMS: 10000,
+        });
+        await client.connect();
+        console.log("✅ MongoDB Connected Successfully");
+        dbInstance = client.db(dbname);
+        return dbInstance;
+    } catch (error) {
+        console.error("❌ MongoDB Connection Error:", error.message);
+        console.error("❌ Full Error:", error);
+        throw error; // Rethrow so the route knows it failed
+    }
 }
