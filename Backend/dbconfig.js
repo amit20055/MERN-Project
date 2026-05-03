@@ -2,7 +2,11 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
 
-const url = process.env.MONGO_URI;
+// Append TLS bypass params to handle OpenSSL compatibility issues on Render
+const baseUrl = process.env.MONGO_URI;
+const url = baseUrl.includes('?') 
+    ? baseUrl + '&tls=true&tlsAllowInvalidCertificates=true'
+    : baseUrl + '?tls=true&tlsAllowInvalidCertificates=true';
 const dbname = "My-Project2";
 export const collectionName = "Todo-list";
 
