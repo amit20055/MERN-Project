@@ -13,7 +13,11 @@ export const connection = async () => {
     if (dbInstance) {
         return dbInstance;
     }
-    client = new MongoClient(url);
+    client = new MongoClient(url, {
+        tls: true,
+        tlsAllowInvalidCertificates: true,
+        serverSelectionTimeoutMS: 5000,
+    });
     await client.connect();
     console.log("MongoDB Connected");
     dbInstance = client.db(dbname);
