@@ -27,12 +27,9 @@ function SignUp(){
         result = await result.json();
 
         if(result.success){
-            console.log(result);
-
-            document.cookie = "token=" + result.token + "; path=/";
-
-            localStorage.setItem('login', userData.email);
-            navigate('/');
+            console.log("Signup successful, redirecting to login...");
+            alert("Signup successful! Please login.");
+            navigate('/login');
         } else {
             alert("Try after sometime");
         }
