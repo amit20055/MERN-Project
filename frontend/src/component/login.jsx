@@ -26,7 +26,7 @@ function Login(){
         result =await result.json()
         if(result.success){
             
-            document.cookie="token="+result.token
+            document.cookie = "token=" + result.token + "; path=/";
             localStorage.setItem('login', userData.email)
             window.dispatchEvent(new Event('LocalStorage-change'));
             navigate('/')

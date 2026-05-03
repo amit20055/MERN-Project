@@ -29,8 +29,7 @@ function SignUp(){
         if(result.success){
             console.log(result);
 
-           
-            // document.cookie = "token=" + result.token
+            document.cookie = "token=" + result.token + "; path=/";
 
             localStorage.setItem('login', userData.email);
             navigate('/');

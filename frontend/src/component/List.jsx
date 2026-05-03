@@ -9,7 +9,7 @@ function List() {
     const[selectedTask,setSelectedTask]=useState([]);
 
     const getListData = async () => {
-        let list = await fetch('/api/task',{
+        let list = await fetch('/api/tasks',{
             credentials:'include'
         });
         list = await list.json()
