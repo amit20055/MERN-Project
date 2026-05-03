@@ -150,8 +150,8 @@ app.delete("/delete-multiple",verifyJwtToken, async (req, resp) => {
 
   const collection = await db.collection(collectionName);
   const result = await collection.deleteMany({ _id: { $in: deleteTaskIds } });
-  if (result) {
-    resp.send({ message: "Task deleted successfully", success: result });
+  if (result.acknowledged) {
+    resp.send({ message: "Task deleted successfully", success: true, result });
   } else {
     resp.send({ message: "error try after sometime", success: false });
   }
