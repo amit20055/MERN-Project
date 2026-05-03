@@ -29,7 +29,7 @@ function Login(){
             document.cookie = "token=" + result.token + "; path=/";
             localStorage.setItem('login', userData.email)
             window.dispatchEvent(new Event('LocalStorage-change'));
-            navigate('/')
+            window.location.href = '/';
         }else{
             alert("Wrong User Credentials")
         }
