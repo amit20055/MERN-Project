@@ -169,36 +169,55 @@ function List() {
             </div>
 
             <button onClick={deleteMultiple} className="delete-btn delete-multiple">Delete</button>
-            <ul className="task-list">
-                <li className="list-header"> <input onChange={selectAll} type="Checkbox"/> </li>
-                <li className="list-header">S.No</li>
-                <li className="list-header">Title</li>
-                <li className="list-header">Description</li>
-                <li className="list-header">Priority</li>
-                <li className="list-header">Actions</li>
+            <div className="task-list">
+                <div className="task-header-row">
+                    <div className="list-header"> <input onChange={selectAll} type="Checkbox" checked={selectedTask.length === (taskData ? taskData.length : 0) && (taskData ? taskData.length : 0) > 0}/> </div>
+                    <div className="list-header">S.No</div>
+                    <div className="list-header">Title</div>
+                    <div className="list-header">Description</div>
+                    <div className="list-header">Priority</div>
+                    <div className="list-header">Actions</div>
+                </div>
 
-                {
-                    filteredTasks && filteredTasks.map((item, index) => (
-                        <Fragment key={item._id}>
-                            <li className="list-item" style={getPriorityStyle(item.priority)}><input onChange={()=>selectSingleItem(item._id)} checked={selectedTask.includes(item._id)}  type="checkbox"/></li>
-                            <li className="list-item">{index + 1}</li>
-                            <li className="list-item">{item.title}</li>
-                            <li className="list-item">{item.description}</li>
-                            <li className="list-item" style={{
-                                fontWeight: '900', 
-                                color: item.priority === 'High' ? '#ff3333' : item.priority === 'Medium' ? '#ffd700' : '#00ff7f',
-                                textShadow: '1px 1px 2px rgba(0,0,0,0.5)' // 👈 Shadow for better contrast
-                            }}>
-                                {item.priority || 'Low'}
-                            </li>
-                            <li className="list-item">
-                                <button className="delete-btn" onClick={()=>deleteTask(item._id)}>Delete</button>
-                                <Link className="update-btn" to={"update/"+item._id}>Update</Link>
-                            </li>
-                        </Fragment>
-                    ))
-      }
-            </ul>
+                <div className="task-items-container">
+                    {
+                        filteredTasks && filteredTasks.map((item, index) => (
+                            <div className="task-row" key={item._id} style={getPriorityStyle(item.priority)}>
+                                <div className="list-item select-cell">
+                                    <input onChange={()=>selectSingleItem(item._id)} checked={selectedTask.includes(item._id)}  type="checkbox"/>
+                                </div>
+                                <div className="list-item sn-cell">
+                                    <span className="mobile-label">S.No:</span>
+                                    <span className="cell-value">{index + 1}</span>
+                                </div>
+                                <div className="list-item title-cell">
+                                    <span className="mobile-label">Title:</span>
+                                    <span className="cell-value">{item.title}</span>
+                                </div>
+                                <div className="list-item desc-cell">
+                                    <span className="mobile-label">Description:</span>
+                                    <span className="cell-value">{item.description}</span>
+                                </div>
+                                <div className="list-item priority-cell" style={{
+                                    fontWeight: '900', 
+                                    color: item.priority === 'High' ? '#ff3333' : item.priority === 'Medium' ? '#ffd700' : '#00ff7f',
+                                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)' // 👈 Shadow for better contrast
+                                }}>
+                                    <span className="mobile-label">Priority:</span>
+                                    <span className="cell-value">{item.priority || 'Low'}</span>
+                                </div>
+                                <div className="list-item actions-cell">
+                                    <span className="mobile-label">Actions:</span>
+                                    <div className="action-buttons">
+                                        <button className="delete-btn" onClick={()=>deleteTask(item._id)}>Delete</button>
+                                        <Link className="update-btn" to={"update/"+item._id}>Update</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
         </div>
     );
 }
