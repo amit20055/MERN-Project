@@ -61,6 +61,13 @@ function AddTask(){
                     <option value="High">High (Red)</option>
                 </select>
 
+                <label>Due Date & Time</label>
+                <input
+                    value={taskData.dueDate || ''}
+                    onChange={(e)=>setTaskData({...taskData, dueDate:e.target.value})}
+                    type="datetime-local"
+                />
+
                 <button type='button' onClick={handleAddTask} className="btn">
                     Add New Task
                 </button>

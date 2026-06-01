@@ -99,6 +99,14 @@ function List() {
         return { borderLeft: '8px solid #2ed573' };
     }
 
+    // Overdue deadline check helper
+    const isOverdue = (dueDate) => {
+        if (!dueDate) return false;
+        const now = new Date();
+        const taskDate = new Date(dueDate);
+        return taskDate.getTime() < now.getTime();
+    }
+
     // Calculate stats for Dashboard
     const total = taskData ? taskData.length : 0;
     const high = taskData ? taskData.filter(t => t.priority === 'High').length : 0;
@@ -175,46 +183,69 @@ function List() {
                     <div className="list-header">S.No</div>
                     <div className="list-header">Title</div>
                     <div className="list-header">Description</div>
+                    <div className="list-header">Due Date</div>
                     <div className="list-header">Priority</div>
                     <div className="list-header">Actions</div>
                 </div>
 
                 <div className="task-items-container">
                     {
-                        filteredTasks && filteredTasks.map((item, index) => (
-                            <div className="task-row" key={item._id} style={getPriorityStyle(item.priority)}>
-                                <div className="list-item select-cell">
-                                    <input onChange={()=>selectSingleItem(item._id)} checked={selectedTask.includes(item._id)}  type="checkbox"/>
-                                </div>
-                                <div className="list-item sn-cell">
-                                    <span className="mobile-label">S.No:</span>
-                                    <span className="cell-value">{index + 1}</span>
-                                </div>
-                                <div className="list-item title-cell">
-                                    <span className="mobile-label">Title:</span>
-                                    <span className="cell-value">{item.title}</span>
-                                </div>
-                                <div className="list-item desc-cell">
-                                    <span className="mobile-label">Description:</span>
-                                    <span className="cell-value">{item.description}</span>
-                                </div>
-                                <div className="list-item priority-cell" style={{
-                                    fontWeight: '900', 
-                                    color: item.priority === 'High' ? '#ff3333' : item.priority === 'Medium' ? '#ffd700' : '#00ff7f',
-                                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)' // 👈 Shadow for better contrast
-                                }}>
-                                    <span className="mobile-label">Priority:</span>
-                                    <span className="cell-value">{item.priority || 'Low'}</span>
-                                </div>
-                                <div className="list-item actions-cell">
-                                    <span className="mobile-label">Actions:</span>
-                                    <div className="action-buttons">
-                                        <button className="delete-btn" onClick={()=>deleteTask(item._id)}>Delete</button>
-                                        <Link className="update-btn" to={"update/"+item._id}>Update</Link>
+                        filteredTasks && filteredTasks.map((item, index) => {
+                            const overdue = isOverdue(item.dueDate);
+                            return (
+                                <div className="task-row" key={item._id} style={getPriorityStyle(item.priority)}>
+                                    <div className="list-item select-cell">
+                                        <input onChange={()=>selectSingleItem(item._id)} checked={selectedTask.includes(item._id)}  type="checkbox"/>
+                                    </div>
+                                    <div className="list-item sn-cell">
+                                        <span className="mobile-label">S.No:</span>
+                                        <span className="cell-value">{index + 1}</span>
+                                    </div>
+                                    <div className="list-item title-cell">
+                                        <span className="mobile-label">Title:</span>
+                                        <span className="cell-value">{item.title}</span>
+                                    </div>
+                                    <div className="list-item desc-cell">
+                                        <span className="mobile-label">Description:</span>
+                                        <span className="cell-value">{item.description}</span>
+                                    </div>
+                                    <div className="list-item date-cell" style={overdue ? { color: '#ff4d4d', fontWeight: 'bold' } : {}}>
+                                        <span className="mobile-label">Due Date:</span>
+                                        <span className="cell-value" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '5px' }}>
+                                            {item.dueDate ? new Date(item.dueDate).toLocaleString() : 'No Deadline'}
+                                            {overdue && (
+                                                <span style={{ 
+                                                    fontSize: '11px', 
+                                                    background: '#ff4d4d', 
+                                                    color: 'white', 
+                                                    padding: '2px 6px', 
+                                                    borderRadius: '4px',
+                                                    display: 'inline-block',
+                                                    fontWeight: 'bold'
+                                                }}>
+                                                    Overdue
+                                                </span>
+                                            )}
+                                         </span>
+                                    </div>
+                                    <div className="list-item priority-cell" style={{
+                                        fontWeight: '900', 
+                                        color: item.priority === 'High' ? '#ff3333' : item.priority === 'Medium' ? '#ffd700' : '#00ff7f',
+                                        textShadow: '1px 1px 2px rgba(0,0,0,0.5)' // 👈 Shadow for better contrast
+                                    }}>
+                                        <span className="mobile-label">Priority:</span>
+                                        <span className="cell-value">{item.priority || 'Low'}</span>
+                                    </div>
+                                    <div className="list-item actions-cell">
+                                        <span className="mobile-label">Actions:</span>
+                                        <div className="action-buttons">
+                                            <button className="delete-btn" onClick={()=>deleteTask(item._id)}>Delete</button>
+                                            <Link className="update-btn" to={"update/"+item._id}>Update</Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))
+                            );
+                        })
                     }
                 </div>
             </div>

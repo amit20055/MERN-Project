@@ -80,6 +80,13 @@ function UpdateTask(){
                     <option value="High">High</option>
                 </select>
 
+                <label>Due Date & Time</label>
+                <input
+                    value={taskData?.dueDate || ''}
+                    onChange={(e)=>setTaskData({...taskData, dueDate:e.target.value})}
+                    type="datetime-local"
+                />
+
                 <button onClick={updateTask} className="btn">
                     Update Task
                 </button>

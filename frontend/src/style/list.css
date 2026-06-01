@@ -6,7 +6,7 @@
 
 .task-header-row, .task-row {
     display: grid;
-    grid-template-columns: 80px 50px 150px 1fr 100px 180px;
+    grid-template-columns: 80px 50px 150px 1fr 200px 100px 180px;
     gap: 10px;
     margin-bottom: 10px;
 }
