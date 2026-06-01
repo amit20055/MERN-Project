@@ -117,9 +117,8 @@ app.put("/update-task",verifyJwtToken, async (req, resp) => {
   const db = await connection();
   const collection = await db.collection(collectionName);
   const { _id, ...fields } = req.body;
-  if (fields.dueDate) {
-    fields.emailSent = false; // Reset alert status on deadline reschedule
-  }
+  // Always reset emailSent on any update so reminder fires again
+  fields.emailSent = false;
   const update = { $set: fields };
 
   // 👈 Check ki user sirf apna hi task update kare
@@ -209,10 +208,10 @@ async function checkAndSendReminders() {
       if (isNaN(taskDueDate.getTime())) continue;
       
       const timeDiff = taskDueDate.getTime() - now.getTime();
-      const oneHourMs = 60 * 60 * 1000;
+      const twentyFourHoursMs = 24 * 60 * 60 * 1000;
       
-      // Due within 1 hour, in the future or very recently passed (last 5 min)
-      if (timeDiff > -5 * 60 * 1000 && timeDiff <= oneHourMs) {
+      // Due within 24 hours (future) or very recently passed (last 10 min)
+      if (timeDiff > -10 * 60 * 1000 && timeDiff <= twentyFourHoursMs) {
         const recipientEmail = task.userEmail || "no-email@example.com";
         const taskTitle = task.title || "Untitled Task";
         const taskDesc = task.description || "No description provided.";
