@@ -46,7 +46,9 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    width: 45%;
+    flex: 1;
+    box-sizing: border-box;
+    text-align: center;
 }
 .delete-btn:hover{
     background-color: #c32121;
@@ -59,17 +61,21 @@
     padding: 6px;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
     font-size: 14px;
-    width: 45%;
+    flex: 1;
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    box-sizing: border-box;
 }
 .update-btn:hover{
     background-color: #096a35;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
 }
 
 .delete-multiple{
@@ -143,17 +149,7 @@
     }
     
     .task-row .actions-cell .action-buttons {
-        display: flex;
-        gap: 10px;
-        width: 100%;
         margin-top: 6px;
-    }
-    
-    .task-row .actions-cell .action-buttons .delete-btn,
-    .task-row .actions-cell .action-buttons .update-btn {
-        width: 50%;
-        margin: 0;
-        box-sizing: border-box;
     }
     
     .delete-multiple {
