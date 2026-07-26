@@ -9,22 +9,8 @@ import nodemailer from "nodemailer";
 const app = express();
 
 app.use(express.json());
-
-const allowedOrigins = [
-  'https://mern-frontend-jade.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:4173'
-];
-
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (e.g. curl, Postman, Render health checks)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   credentials: true
 }));
 app.use(cookieParser());
