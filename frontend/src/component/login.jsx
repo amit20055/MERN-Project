@@ -26,8 +26,10 @@ function Login(){
         result =await result.json()
         if(result.success){
             
-            document.cookie = "token=" + result.token + "; path=/";
-            localStorage.setItem('login', userData.email)
+            // SameSite=None; Secure is required for cross-origin cookies (Render + Vercel)
+            document.cookie = "token=" + result.token + "; path=/; SameSite=None; Secure";
+            localStorage.setItem('login', userData.email);
+            localStorage.setItem('token', result.token); // Store token for Authorization header fallback
             window.dispatchEvent(new Event('LocalStorage-change'));
             window.location.href = '/';
         }else{

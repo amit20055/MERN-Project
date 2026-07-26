@@ -9,9 +9,23 @@ import nodemailer from "nodemailer";
 const app = express();
 
 app.use(express.json());
+
+const allowedOrigins = [
+  'https://mern-frontend-jade.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:4173'
+];
+
 app.use(cors({
-  origin:true,
-  credentials:true
+  origin: function(origin, callback) {
+    // Allow requests with no origin (e.g. curl, Postman, Render health checks)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
 }));
 app.use(cookieParser());
 
@@ -173,7 +187,12 @@ app.delete("/delete-multiple",verifyJwtToken, async (req, resp) => {
 });
 
 function verifyJwtToken(req,resp,next){
-  const token= req.cookies['token'];
+  // Check cookie first, then fallback to Authorization header
+  let token = req.cookies['token'];
+  if (!token && req.headers['authorization']) {
+    token = req.headers['authorization'].replace('Bearer ', '');
+  }
+  
   jwt.verify(token,'Google',(error,decoded)=>{
     if(error){
       return resp.send({

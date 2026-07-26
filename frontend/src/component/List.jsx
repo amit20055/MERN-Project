@@ -17,8 +17,10 @@ function List() {
     );
 
     const getListData = async () => {
+        const token = localStorage.getItem('token') || '';
         let list = await fetch(`/api/tasks?t=${new Date().getTime()}`,{
-            credentials:'include'
+            credentials:'include',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
         list = await list.json()
         if (list.success) {
@@ -33,9 +35,11 @@ function List() {
         getListData();
     }, []);
     const deleteTask = async (id) => {
+        const token = localStorage.getItem('token') || '';
         let item = await fetch('/api/delete/'+id, {
             method: 'delete',
              credentials:'include',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
         item = await item.json();
         if (item.success) {
@@ -73,12 +77,14 @@ function List() {
         setTaskData(updatedTasks);
 
         // 2. Backend ko delete request bhejo
+        const token = localStorage.getItem('token') || '';
         let item = await fetch('/api/delete-multiple', { // removed trailing slash
             method: 'delete',
              credentials:'include',
             body:JSON.stringify(selectedTask),
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
         item = await item.json();

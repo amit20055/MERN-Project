@@ -10,11 +10,13 @@ function AddTask(){
     const handleAddTask = async () => {
         console.log(taskData);
 
+        const token = localStorage.getItem('token') || '';
         let result = await fetch('/api/add-task', {
             method: 'POST',
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(taskData)
         });
